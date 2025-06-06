@@ -12,7 +12,7 @@ import { registerSchema } from "@/validation/authValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuth, SignUpRequest } from "@/redux/slice/auth.slice";
+import { SignUpRequest } from "@/redux/slice/auth.slice";
 import { SignUpPayload } from "@/types/auth.types";
 
 export default function RegisterPage() {
@@ -35,7 +35,7 @@ export default function RegisterPage() {
   };
   return (
     <div className="bg-gray-100 h-screen w-full flex justify-center items-center">
-      <div className="flex flex-col items-center bg-white px-6 py-12 rounded shadow-md w-[400px]">
+      <div className="flex flex-col items-center bg-white px-6 py-12 rounded shadow-md w-[400px] mx-5 md:w-[500px] md:mx-10">
         <Image
           src="/images/Logo.webp"
           height={100}
@@ -47,7 +47,7 @@ export default function RegisterPage() {
         <form
           action=""
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full"
+          className="w-full md:px-4"
         >
           <div className="w-full mb-4">
             <label

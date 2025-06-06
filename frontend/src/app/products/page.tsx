@@ -2,7 +2,7 @@
 import Image from "next/image";
 import axios from "axios";
 import Link from "next/link";
-import {useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Cart from "@/app/cart/page";
 import { SlidersHorizontal, X } from "lucide-react";
@@ -10,12 +10,13 @@ import { useDispatch } from "react-redux";
 import { createCartRequest } from "@/redux/slice/cart.slice";
 import { CartPayload } from "@/types/cart.types";
 import Sidebar from "@/layouts/Sidebar";
-
+import { FilterProductCategory } from "@/context/FilterProductContext";
 interface Product {
   _id: string;
   title: string;
   image: string;
   price: number;
+  category: string;
   sku: string;
 }
 
@@ -24,17 +25,24 @@ export default function Product() {
   const [visibleCount, setVisibleCount] = useState(10);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const { selectedCategory } = useContext(FilterProductCategory);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/products");
+        const url = selectedCategory
+          ? `http://localhost:5000/products?category=${selectedCategory}`
+          : `http://localhost:5000/products`;
+
+        const response = await axios.get(url);
         setProducts(response.data.data);
+        console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
     fetchProducts();
-  }, []);
+  }, [selectedCategory]);
 
   const fetchCart = (product: CartPayload) => {
     dispatch(createCartRequest(product));
@@ -48,7 +56,9 @@ export default function Product() {
     <>
       <Cart />
       <main className=" xl:flex bg-gray-100 min-h-screen">
-        <Sidebar />
+        <Sidebar  isMobile={false} setOpen={setOpen}  />
+
+
         <div className="xl:w-[75%]  flex-col flex items-center w-full h-full px-4 xl:ml-[25%] xl:mt-20 mb-5 mt-14">
           <div className="mt-5 w-full ">
             <Image
@@ -61,74 +71,68 @@ export default function Product() {
             />
           </div>
           {open ? (
-            <div className="w-96 bg-teal-100 fixed top-0 h-screen left-0 z-100">
-              <button
-                onClick={() => setOpen(false)}
-                className="text-right cursor-pointer"
-              >
-                <X />
-              </button>
-              <Sidebar />
-            </div>
+            <Sidebar isMobile={true} setOpen={setOpen} />
           ) : (
             <div className="xl:hidden block w-full bg-white py-2 px-4 ">
               <button
-                className="bg-accent border-1 px-5 py-2 rounded-sm font-semibold flex justify-center items-center cursor-pointer hover:bg-teal-600 hover:text-white"
+                className="bg-accent border-1 px-5 py-2 rounded-sm font-semibold flex justify-center items-center cursor-pointer hover:bg-teal-800 hover:text-white"
                 onClick={() => setOpen(true)}
+                aria-label="filter-button"
               >
                 <SlidersHorizontal />
                 <span className="px-2">filter</span>
               </button>
             </div>
           )}
-          <section className=" gap-6 mt-5 w-full flex flex-wrap">
-            {products.slice(0, visibleCount).map((product, i) => {
+          <section className="gap-6 my-5 w-full flex flex-wrap">
+            {products.slice(0, visibleCount).map((product: any) => {
               return (
                 <div
-                  className="sm:h-96 sm:w-64  w-full h-72 border bg-white border-gray-100 rounded-md transition cursor-pointer flex flex-col justify-between hover:shadow-lg p-4 shadow-md"
+                  className="sm:h-96 sm:w-56  lg:w-72 xl:w-64 pb-6  w-full h-84 border bg-white border-gray-100 rounded-md transition cursor-pointer flex flex-col justify-between hover:shadow-lg px-4 shadow-md"
                   key={product._id}
                 >
                   <Link href={`/products/${product.sku}`}>
-                    <div className="w-full sm:h-60 h-40 flex justify-center items-center ">
+                    <div className="w-full sm:my-5 flex justify-center items-center ">
                       <Image
                         src={product.image}
                         alt="product_image"
-                        height={200}
+                        height={100}
                         width={200}
-                        className="object-contain"
+                        className="object-contain "
                       />
                     </div>
                     <div className="mx-2">
-                      <p className="text-lg text-gray-500 font-semibold">
+                      <p className="text-base text-gray-500 font-semibold">
                         {" "}
-                        $ {product.price}
+                        $ {product.price.toFixed(2)}
                       </p>
-                      <p className="py-1 ">{product.title}</p>
+                      <p className="text-sm text-gray-600 font-semibold py-1">
+                        {product.title}
+                      </p>
                     </div>
                   </Link>
-
-                  <button
-                    className=" flex justify-center  items-center bg-gray-100   text-sm font-medium hover:text-white transition cursor-pointer rounded-sm"
-                    onClick={() =>
-                      fetchCart({ productId: product._id, quantity: 1 })
-                    }
-                  >
-                    <span className="flex flex-1 justify-center hover:bg-teal-500 py-2 rounded-l-sm">
+                  <div className="flex bg-gray-100    font-medium hover:bg-teal-700 hover:text-white transition cursor-pointer rounded-sm">
+                    <button
+                      className=" flex flex-1 text-center justify-center items-center text-sm"
+                      onClick={() =>
+                        fetchCart({ productId: product._id, quantity: 1 })
+                      }
+                    >
                       Add
-                    </span>
-                    <span className="hover:bg-teal-600 px-3 py-2 rounded-r-sm bg-gray-200">
+                    </button>
+                    <span className="hover:bg-teal-800 py-2 text-xl px-4 hover:rounded-r-md">
                       +
                     </span>
-                  </button>
+                  </div>
                 </div>
               );
             })}
           </section>
           {visibleCount < products.length && (
-            <div className="my-8">
+            <div className="my-10">
               <button
                 onClick={handleLoadMore}
-                className="bg-teal-600 text-white py-2 px-6 rounded shadow hover:bg-teal-700 transition"
+                className="bg-teal-700 text-white py-2 px-6 rounded shadow hover:bg-teal-800 transition cursor-pointer"
               >
                 Load More
               </button>
