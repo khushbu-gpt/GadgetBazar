@@ -4,5 +4,5 @@ import { addCategory, getAllCategory, getSingeleCategory} from "./category.contr
 export const categoryRouter=Router()
 
 categoryRouter.post("/",addCategory)
-categoryRouter.get("/single",getSingeleCategory)
+categoryRouter.get("/",getSingeleCategory)
 categoryRouter.get("/",getAllCategory)

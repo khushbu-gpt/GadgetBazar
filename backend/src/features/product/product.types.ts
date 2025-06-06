@@ -3,7 +3,7 @@ import mongoose, { Document, Types } from "mongoose";
 
 export interface IProduct extends Document{
     title:string,
-    category:Types.ObjectId,
+    category:string,
     price:number,
     image:string,
     mrp?:number,

@@ -4,9 +4,7 @@ export const sku=z.string().min(1,"SKU is required").regex(/^[A-Z0-9-]+$/,"Must 
 export const createProductSchema = z.object({
   title: z.string().min(2, "Title is required"),
   image: z.string().url("Image should be valid"),
-  category: z
-    .string()
-    .min(24, "Category is required"),
+  category: z .string(),
   description: z.string().optional(),
   price: z.number().positive("Price must be positive."),
   mrp: z.number().positive("Price must be positive.").optional(),

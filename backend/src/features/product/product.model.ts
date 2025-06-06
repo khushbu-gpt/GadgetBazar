@@ -6,8 +6,7 @@ export const productSchema = new mongoose.Schema<IProduct>(
     price: { type: Number, required: true, min: [0, "MRP cannot be negative"] },
     image: { type: String, required: true },
     category: {
-      type:mongoose.Schema.Types.ObjectId,
-      ref: "Category",
+      type:String,
       required: true,
     },
     description: String,

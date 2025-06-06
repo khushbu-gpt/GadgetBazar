@@ -2,9 +2,6 @@ import { AppError } from "../../shared/utils/AppError";
 import { ProductModel } from "./product.model";
 import * as Zod from "./product.validation";
 
-export const getProductService = async () => {
-  return await ProductModel.find({}).lean();
-};
 
 export const getProductBySKUService = async (
   sku:string

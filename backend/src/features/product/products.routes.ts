@@ -3,8 +3,8 @@ import {
   createListOfProduct,
   createProduct,
   deleteProductBySKU,
-  getAllProducts,
   getProductBySKU,
+  getProductsByCategory,
   updateProduct,
 } from "./products.controller";
 import {
@@ -18,7 +18,6 @@ import { zodValidation } from "../../shared/middleware/validation";
 
 export const productRouter = Router();
 
-productRouter.get("/", getAllProducts);
 productRouter.post(
   "/",
   zodValidation({ body: createProductSchema }),
@@ -36,7 +35,7 @@ productRouter.delete(
 );
 productRouter.put(
   "/:sku",
-  zodValidation({ body: updateProductSchema, params: getProductSchema }),
+  zodValidation({body: updateProductSchema, params: getProductSchema }),
   updateProduct
 );
 productRouter.post(
@@ -44,3 +43,5 @@ productRouter.post(
   zodValidation({ body: createListOfProductScema }),
   createListOfProduct
 );
+
+productRouter.get("/",getProductsByCategory)

@@ -29,8 +29,7 @@ export async function getSingeleCategory(
 ) {
   try {
     const {slug} = req.query;
-    console.log("slug",slug)
-    const category = await CategoryModel.findOne({slug });
+    const category = await CategoryModel.findOne({slug});
     if (!category) return next(new AppError("category not found"));
     sendResponse(res, {
       data: category,

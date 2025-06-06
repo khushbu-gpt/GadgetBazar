@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../../shared/utils/sendResponse";
 import { AppError } from "../../shared/utils/AppError";
 import * as ProductService from "./products.service";
+import { ProductModel } from "./product.model";
 
 
 
@@ -20,20 +21,6 @@ export async function createProduct(
     });
   } catch (error) {
     next(error);
-  }
-}
-
-export async function getAllProducts(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    const products = await ProductService.getProductService();
-    if (!products) next(new AppError("products not found", 404));
-    sendResponse(res, { message: "products retrieved", data: products });
-  } catch (error) {
-    next(new AppError("retrieve failed"));
   }
 }
 export async function getProductBySKU(
@@ -78,7 +65,6 @@ export async function updateProduct(
     const data = req.body;
     const {sku} = req.params;
     const updatedProducts = await ProductService.updateProductService(sku, data);
-    // if (!updatedProducts) return next(new AppError("products not found", 404));
     sendResponse(res, {
       message: "Product Updated",
       data: updatedProducts,
@@ -103,5 +89,24 @@ export async function createListOfProduct(
     });
   } catch (error) {
     next(error);
+  }
+}
+export async function getProductsByCategory(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const {category}= req.query;
+    let products;
+    if (category) {
+      products = await ProductModel.find({ category });
+    } else {
+      products = await ProductModel.find({});
+    }
+    if (!products) throw new AppError("products not found", 404);
+    sendResponse(res, { message: "products retrieved", data: products });
+  } catch (error) {
+    next(error)
   }
 }
