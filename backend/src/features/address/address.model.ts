@@ -23,7 +23,7 @@ export const addressBaseSchema=new Schema<IAddressBase>({
 export const addressSchema=new Schema<IAddress>({
   uid:{
     type:mongoose.Schema.Types.ObjectId,
-    ref:"users",
+    ref:"User",
     required:true
   },
   address:addressBaseSchema,
@@ -32,4 +32,4 @@ timestamps:true
 }
 )
 
-export const AddressModel=model<IAddress>("address",addressSchema)
+export const AddressModel=model<IAddress>("Address",addressSchema)

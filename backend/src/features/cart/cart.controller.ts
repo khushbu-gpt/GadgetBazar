@@ -1,11 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { AppError } from "../../shared/utils/AppError";
 import { sendResponse } from "../../shared/utils/sendResponse";
-import { CartModel } from "./cart.model";
-import { ProductModel } from "../product/product.model";
-import { Types } from "mongoose";
-import { decodeToken } from "../../shared/utils/jsontoken";
 
+import * as Cartservice from "./cart.service"
 
 export const getCartController = async (
   req: Request,
@@ -13,9 +10,9 @@ export const getCartController = async (
   next: NextFunction
 ) => {
   try {
-  const uid= req.user?.uid
-    const cart = await CartModel.findOne({ uid})
-    if (!cart) return next(new AppError("cart not found", 404));
+    const userId = req.user?.uid
+    if (!userId) return next(new AppError("User ID missing in token", 401));
+    const cart = await Cartservice.getCartService(userId)
     sendResponse(res, {
       status_code: 200,
       data: cart,
@@ -27,69 +24,17 @@ export const getCartController = async (
   }
 };
 
-export const addToCartController = async (
+export const deleteCartController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-     const auth = req.headers.authorization;
-    const token = auth?.split(" ")[1];
-    if (!token) throw new Error("Invalid Token!");
-    const token_payload = decodeToken(token);
-    console.log(token_payload);
-    let cart = await CartModel.findOne({ uid: new Types.ObjectId((token_payload.uid as string))})
-    // const user = UserFromRequest(req);
-    // const userId = user?.uid
-    const _id  = req.params.id
-    const product = await ProductModel.findById(_id)
-    if (!product) return next(new AppError("product Id not found", 404));
-    const quantity = 1;
-    const subTotal = Number(product.price) * quantity;
-    const tax = subTotal * 0.1;
-    const discount = Number(product.price) * 0.1;
-    const total = subTotal + tax - discount;
-    if (!cart) {
-     cart = await CartModel.create({
-        items: [
-          {
-            _id,
-            quantity,
-            subTotal,
-          },
-        ],
-        price: {
-          tax,
-          subTotal,
-          discount,
-        },
-        total,
-      });
-    } else {
-      const existCart = cart.items.find((product) => product.id ===_id);
-      if (existCart) {
-        existCart.quantity += quantity;
-        existCart.subTotal += subTotal;
-      } else {
-        cart.items.push({
-          _id,
-          quantity,
-          subTotal,
-        });
-      }
-      const updatedSubTotal = cart.items.reduce((sum, item) => sum + item.subTotal, 0)
-      const updatedTax = updatedSubTotal * 0.1
-      const updatedDiscount = updatedSubTotal * 0.1
-      cart.price = {
-        tax: updatedTax,
-        subTotal: updatedSubTotal,
-        discount: updatedDiscount,
-      }
-      cart.total = updatedSubTotal + updatedTax - updatedDiscount
-      await cart.save()
-    }
+    const userId = req.user?.uid;
+    if (!userId) return next(new AppError("User ID missing in token", 401));
+    const cart = await Cartservice.deleteCartService(userId)
     sendResponse(res, {
-      message: "product  added success!",
+      message: "product  removed from cart!",
       status_code: 201,
       data: cart,
     });
@@ -98,55 +43,49 @@ export const addToCartController = async (
   }
 };
 
-export const removeFromCartController = async (
+
+export const createCartController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const auth = req.headers.authorization;
-    const token = auth?.split(" ")[1];
-    if (!token) throw new Error("Invalid Token!");
-    const token_payload = decodeToken(token);
-    console.log(token_payload);
-    let cart = await CartModel.findOne({ uid: new Types.ObjectId((token_payload.uid as string))})
-    // const user = UserFromRequest(req);
-    const _id = req.params.id;
-    const product = await ProductModel.findById(_id)
-    if (!product) return next(new AppError("product Id not found", 404));
-    if (!cart) {
-      return next(new AppError("Cart not found", 404));
-    } else {
-      const existingItemIndex = cart.items.findIndex((product) => product.id === _id);
-      if (existingItemIndex === -1) {
-        return next(new AppError("Product not found in cart", 404));
-      }
-      const existingItem = cart.items[existingItemIndex]
-      if (existingItem.quantity > 1) {
-        existingItem.quantity -= 1;
-        existingItem.subTotal = Number(product.price) * existingItem.quantity;
-      } else {
-        cart.items.splice(existingItemIndex, -1)
-      }
+    const userId = req.user?.uid;
+    if (!userId) return next(new AppError("User ID missing in token", 401));
 
-      const updatedSubTotal = cart.items.reduce((sum, item) => sum + item.subTotal, 0)
-      const updatedTax = updatedSubTotal * 0.1
-      const updatedDiscount = updatedSubTotal * 0.1
-      const updatedTotal = updatedSubTotal + updatedTax - updatedDiscount
-      cart.price = {
-        tax: updatedTax,
-        subTotal: updatedSubTotal,
-        discount: updatedDiscount,
-      }
-      cart.total = updatedTotal
-      await cart.save()
-    }
+    const { productId, quantity } = req.body;
+    if (!productId) return next(new AppError("Product ID is required", 400));
 
-
+    const cart = await Cartservice.createCartService(productId, quantity, userId)
     sendResponse(res, {
-      message: "product  removed from cart!",
-      status_code: 201,
       data: cart,
+      message: "Product added successfully!",
+      status_code: 201,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+export const updateCartController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.uid;
+    if (!userId) return next(new AppError("User ID missing in token", 401));
+
+    const { productId, quantity } = req.body;
+    if (!productId) return next(new AppError("Product ID is required", 400));
+
+    const cart = await Cartservice.updateCartService(productId, quantity, userId)
+    sendResponse(res, {
+      data: cart,
+      message: "Product added successfully!",
+      status_code: 200,
     });
   } catch (error) {
     next(error);

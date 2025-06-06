@@ -1,4 +1,17 @@
 import "dotenv/config";
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        uid: string;
+        email: string;
+        role: string;
+      };
+    }
+  }
+}
+
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { connectDB } from "./shared/config/db";
@@ -9,7 +22,6 @@ import { categoryRouter } from "./features/category/category.routes";
 import { errorHandler } from "./shared/middleware/errorHandler";
 import { addressRouter } from "./features/address/address.routes";
 import { cartRouter } from "./features/cart/cart.routes";
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 app.use(cors({ origin: ["http://localhost:3000"] }));

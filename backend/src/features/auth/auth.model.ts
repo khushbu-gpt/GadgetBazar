@@ -28,5 +28,5 @@ userSchema.pre("save", async function (next) {
       next(new AppError("Unexpected Error!", 500));
     }
   });
-export const UserModel=mongoose.model("users",userSchema)
+export const UserModel=mongoose.model("User",userSchema)
 

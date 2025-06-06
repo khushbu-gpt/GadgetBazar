@@ -24,28 +24,23 @@ export async function uploadImage(req: Request, res: Response) {
 export async function uploadMultipleImages(req: Request, res: Response,next:NextFunction) {
   try {
     const files = req.files as Express.Multer.File[]
-    console.log(files);
+    console.log("files",files);
     if (!files|| !files.length) throw new Error(" At least One Image is required!");
-    
-  const uploadResults=[]
-    for(const file of files){
-      const result = await cloudinary.uploader.upload(file.path, {
-        folder: "uploads",
-      });
-      uploadResults.push({
-        url: result.secure_url,
-        publicId: result.public_id,}
-      )
-      fs.unlinkSync(file.path);
-      }
 
+  const uploadResults = await Promise.all(
+  files.map(async (file) => {
+    const result = await cloudinary.uploader.upload(file.path, { folder: "uploads" });
+    fs.unlinkSync(file.path);
+    return { url: result.secure_url, publicId: result.public_id };
+  })
+);
     res.json({
       message: "Image uploaded from cloudinary",
       images:uploadResults
     });
   } catch (error) {
-    console.error(error)
-    // next(error)
+    console.log(error)
+    next(error)
   }
 }
 

@@ -7,7 +7,7 @@ export const productSchema = new mongoose.Schema<IProduct>(
     image: { type: String, required: true },
     category: {
       type:mongoose.Schema.Types.ObjectId,
-      ref: "categories",
+      ref: "Category",
       required: true,
     },
     description: String,
@@ -37,4 +37,4 @@ export const productSchema = new mongoose.Schema<IProduct>(
   }
 );
 
-export const ProductModel = mongoose.model<IProduct>("products", productSchema);
+export const ProductModel = mongoose.model<IProduct>("Product", productSchema);

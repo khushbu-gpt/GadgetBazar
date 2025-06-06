@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { AppError } from "./AppError";
 
-export type tokenPayload = {
+export type TokenPayload = {
   email: string;
   uid: string;
   role: string;
@@ -47,7 +47,7 @@ export type JWT_EXPIRY_FORMAT =
   | `${number}${UnitAnyCase}`
   | `${number} ${UnitAnyCase}`;
 
-export function generateRefreshToken({ email, uid, role }: tokenPayload) {
+export function generateRefreshToken({ email, uid, role }: TokenPayload) {
   const refreshExpiry =
     (process.env.JWT_REFRESH_EXPIRY as JWT_EXPIRY_FORMAT) || "30d";
   const secret = process.env.JWT_SECRET as string;
@@ -58,7 +58,7 @@ export function generateRefreshToken({ email, uid, role }: tokenPayload) {
   });
 }
 
-export function generateAccessToken({ email, uid, role }: tokenPayload) {
+export function generateAccessToken({ email, uid, role }: TokenPayload) {
   const accessExpiry = process.env.JWT_EXPIRY_FORMAT as JWT_EXPIRY_FORMAT || "1d";
   const secret = process.env.JWT_SECRET as string;
 
@@ -69,19 +69,19 @@ export function generateAccessToken({ email, uid, role }: tokenPayload) {
 }
 
 export function generateLoginToken(
-  { uid, email, role }: tokenPayload): {
+  { uid, email, role }: TokenPayload): {
     refreshToken: string,
-    accesToken: string
+    accessToken: string
   } {
   const accessExpiry = process.env.JWT_EXPIRY_FORMAT || "1d";
   if (!accessExpiry) throw new AppError("Access Expiry is required");
   return {
     refreshToken: generateRefreshToken({ uid, email, role }),
-    accesToken: generateAccessToken({ uid, email, role }),
+    accessToken: generateAccessToken({ uid, email, role }),
   };
 }
-export function decodeToken(token: string): tokenPayload {
+export function decodeToken(token: string): TokenPayload {
   const secret = process.env.JWT_SECRET as string;
   if (!secret) throw new Error("JWT Secret is required");
-  return jwt.verify(token, secret) as tokenPayload;
+  return jwt.verify(token, secret) as TokenPayload;
 }

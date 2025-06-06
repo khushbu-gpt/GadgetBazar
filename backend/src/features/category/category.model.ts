@@ -7,7 +7,7 @@ const categorySchema = new Schema<ICategory>({
     description:{ type: String, trim: true },
     parent: {
         type:mongoose.Schema.Types.ObjectId,
-        ref: "categories", 
+        ref: "Category", 
         default:null,
       },
 }, {
@@ -15,4 +15,4 @@ const categorySchema = new Schema<ICategory>({
 })
 
 
-export const CategoryModel = model<ICategory>("categories", categorySchema)
+export const CategoryModel = model<ICategory>("Category", categorySchema)

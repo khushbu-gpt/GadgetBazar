@@ -6,6 +6,7 @@ export function errorHandler(
   err: Error | AppError | mongoose.Error,
   _req: Request,
   res: Response,
+  next:NextFunction
 ) {
   let statusCode = 500;
   let message = "Something went wrong";
@@ -29,7 +30,7 @@ export function errorHandler(
     status = "fail";
   }
 
-  res.status(statusCode).json({
+ res.status(statusCode).json({
     status,
     success: false,
     message,

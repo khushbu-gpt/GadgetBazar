@@ -1,53 +1,34 @@
 import mongoose, { model, Schema } from "mongoose";
-import { productSchema } from "../product/product.model";
+import { ICart, ICartItem } from "./cart.types";
 
-const cartPriceSchema = new Schema(
+const CartItemSchema = new Schema<ICartItem>(
   {
-    tax: { type: Number, required: true },
-    subTotal: { type: Number, required: true },
-    discount: {
-      type: Number,
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    subtotal: { type: Number, required: true },
+    image: { type: String },
+    quantity: { type: Number, required: true, min: 1 },
+    variant: { type: String }
+  },
+  { _id: false }
+);
+const cartSchema = new Schema<ICart>(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
+    items: { type: [CartItemSchema], required: true, default: [] },
+    subtotal: { type: Number, required: true },
+  tax: { type: Number, required: true },
+  discount: { type: Number, required: true },
+    totalPrice: { type: Number, required: true },
   },
   {
-    _id: false,
+    timestamps: true,
+    autoIndex: true,
   }
 );
-
-export const cartItemSchema = new Schema(
-  {
-    _id: {
-      type: mongoose.Types.ObjectId,
-      ref: "products",
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
-    subTotal: {
-      type: Number,
-      required: true,
-    },
-  },
-  {
-    _id: false,
-  }
-);
-const cartSchema = new Schema({
-uid: {
-    type: mongoose.Types.ObjectId,
-    ref: "users",
-    required: true,
-  },
-  items: {type:[cartItemSchema],required:true,default:[]},
-  price:{type:cartPriceSchema,required:true},
-  total:{type:Number,required:true},
-},{
-    timestamps:true,
-    autoIndex:true
-})
-;
-
-
-export const CartModel=model("cart",cartSchema)
+export const CartModel = model("Cart", cartSchema);

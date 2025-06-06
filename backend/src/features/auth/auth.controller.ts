@@ -36,8 +36,9 @@ export async function loginUserController(
       sameSite: "strict",
     });
     sendResponse(res, {
-      data:{user,
-        accessToken:tokens.accesToken},
+      data:{
+        user,
+        accessToken:tokens.accessToken},
       message: "login success!"
      });
   } catch (error) {

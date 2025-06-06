@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { addToCartController, getCartController, removeFromCartController } from "./cart.controller";
+import { VerifyAccessTokenMiddleWare } from "../../shared/middleware/verifyTokenMiddleware";
+import { createCartController, deleteCartController, getCartController, updateCartController } from "./cart.controller";
 
 export const cartRouter=Router()
-cartRouter.get("/",getCartController)
-cartRouter.post("/increase/:id",addToCartController)
+cartRouter.get("/",VerifyAccessTokenMiddleWare,getCartController)
+cartRouter.post("/",VerifyAccessTokenMiddleWare,createCartController)
+cartRouter.put("/",VerifyAccessTokenMiddleWare,updateCartController)
+cartRouter.delete("/",VerifyAccessTokenMiddleWare,deleteCartController)
 
-cartRouter.post("/decrease/:id",removeFromCartController)

@@ -1,11 +1,10 @@
 import mongoose, { model, Schema } from "mongoose";
 import { addressBaseSchema } from "../address/address.model";
-import { cartItemSchema } from "../cart/cart.model";
 
 const orderSchema=new Schema({
 uid:{
  type:mongoose.Types.ObjectId,
- ref:"users",
+ ref:"User",
  required:true,
 },
 address:{
@@ -13,7 +12,7 @@ type:addressBaseSchema,
 required:true,
 },
 items:{
-    type:[cartItemSchema],
+    type:[],
     required:true,
 },
 shippingFee:{
