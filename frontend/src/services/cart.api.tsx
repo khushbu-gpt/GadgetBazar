@@ -1,34 +1,49 @@
-import axios from "axios"
+import { CartPayload, getCartApiResponse } from "@/types/cart.types";
+import axios from "axios";
+const BACKEND = "http://localhost:5000";
 
-const BACKEND="http://localhost:5000"
-
-
-// interface getCartResponse;
-export async function getCartApi(){
-    const res=await axios.get(`${BACKEND}/cart`,)
-    const response=res.data
-    console.log(response)
-    return response?.cart||[]
-  
+export async function createCartApi(
+  payload: CartPayload,
+  token: string
+):Promise<getCartApiResponse>{
+    const response = await axios.post(`${BACKEND}/cart`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+}
+export async function updateCartApi(
+  payload: CartPayload,
+  token: string
+):Promise<getCartApiResponse>{
+    const response = await axios.post(`${BACKEND}/cart`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
 }
 
-export async function cartIncreaseApi(id:string){
-    try{
-
-    const res=await axios.post(`${BACKEND}/cart/increase/${id}`,id)
-    const response=await res.data
-    return response
-    }catch(error){
-        console.log((error as Error).message)
-    }
+export async function getCartApi(
+  token: string
+):Promise<getCartApiResponse>{
+    const response = await axios.get(`${BACKEND}/cart`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
 }
 
-export async function cartDecreaseApi(id:string){
-    try{
-    const res=await axios.post(`${BACKEND}/cart/decrease/${id}`,)
-    const response=await res.data
-    return response
-    }catch(error){
-        console.log((error as Error).message)
-    }
+
+export async function deleteCartApi(
+  token: string
+):Promise<void>{
+    const response = await axios.delete(`${BACKEND}/cart`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
 }

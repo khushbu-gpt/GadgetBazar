@@ -8,7 +8,8 @@ import axiosInstance from "@/utils/axiosInstance";
 
 export async function loginApi(payload: LoginPayload): Promise<LoginResponse> {
   const res = await axiosInstance.post(`/auth/login`, payload);
-  return res.data;
+  console.log("res",res)
+  return res.data.data;
 }
 
 export async function signUpApi(

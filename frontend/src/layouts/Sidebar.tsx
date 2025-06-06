@@ -1,4 +1,4 @@
-
+"use client"
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Scrollbar, Mousewheel } from "swiper/modules";
 import "swiper/css";
@@ -16,6 +16,8 @@ import {
     Watch,
     Speaker,
 } from "lucide-react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 interface Category{
   _id:string,
@@ -67,6 +69,7 @@ const categories = [
     },
 ];
 export  default  function Sidebar() {
+    // const [categories,setCategories]=useState([])
     return (
       <>
 <aside className="xl:w-[25%] fixed left-0 top-20 h-[calc(100vh-5rem)] z-10 xl:block hidden">
@@ -87,8 +90,8 @@ export  default  function Sidebar() {
             key={index}
           >
             <button className="flex flex-col items-center gap-2 text-center cursor-pointer">
-              <span>  {item.icon}</span>
-              <span>    {item.name}</span>
+              <span> {item.icon}</span>
+              <span> {item.name}</span>
             </button>        
           </div>
         ))}

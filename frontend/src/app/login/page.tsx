@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { LoginRequest } from "@/redux/slice/auth.slice";
-import { LoginPayload, LoginResponse } from "@/types/auth.types";
+import { LoginPayload } from "@/types/auth.types";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch=useDispatch()
@@ -29,9 +29,10 @@ export default function LoginPage() {
 
   const onSubmit=(data: LoginPayload) => {
     dispatch(LoginRequest(data))
-    router.push("/")
+    router.push("/cart")
     reset()
   };
+
 
   return (
     <>
@@ -112,7 +113,6 @@ export default function LoginPage() {
                   Forgot Password?
                 </Link>
               </div>
-
               <Button className="w-full bg-teal-500 hover:bg-teal-600 text-white font-medium mb-6 cursor-pointer">
                 Login
               </Button>
@@ -142,15 +142,3 @@ export default function LoginPage() {
     </>
   );
 }
-// {/* <Dialog>
-// <DialogTrigger></DialogTrigger>
-// <DialogContent>
-//   <DialogHeader>
-//     <DialogTitle>Are you absolutely sure?</DialogTitle>
-//     {/* <DialogDescription>
-//       This action cannot be undone. This will permanently delete your account
-//       and remove your data from our servers.
-//     </DialogDescription> */}
-//   </DialogHeader>
-// </DialogContent>
-// </Dialog> */}

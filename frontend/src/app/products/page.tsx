@@ -1,5 +1,141 @@
-import Product from "@/layouts/Products";
+"use client";
+import Image from "next/image";
+import axios from "axios";
+import Link from "next/link";
+import {useEffect, useState } from "react";
 
-export default function ProductPage(){
-    return <Product/>
+import Cart from "@/app/cart/page";
+import { SlidersHorizontal, X } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { createCartRequest } from "@/redux/slice/cart.slice";
+import { CartPayload } from "@/types/cart.types";
+import Sidebar from "@/layouts/Sidebar";
+
+interface Product {
+  _id: string;
+  title: string;
+  image: string;
+  price: number;
+  sku: string;
+}
+
+export default function Product() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [visibleCount, setVisibleCount] = useState(10);
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/products");
+        setProducts(response.data.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const fetchCart = (product: CartPayload) => {
+    dispatch(createCartRequest(product));
+  };
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 10);
+  };
+
+  return (
+    <>
+      <Cart />
+      <main className=" xl:flex bg-gray-100 min-h-screen">
+        <Sidebar />
+        <div className="xl:w-[75%]  flex-col flex items-center w-full h-full px-4 xl:ml-[25%] xl:mt-20 mb-5 mt-14">
+          <div className="mt-5 w-full ">
+            <Image
+              src={"/images/Gadget-banners.webp"}
+              width={1100}
+              height={300}
+              alt="banner"
+              className="w-full bg-cover"
+              priority
+            />
+          </div>
+          {open ? (
+            <div className="w-96 bg-teal-100 fixed top-0 h-screen left-0 z-100">
+              <button
+                onClick={() => setOpen(false)}
+                className="text-right cursor-pointer"
+              >
+                <X />
+              </button>
+              <Sidebar />
+            </div>
+          ) : (
+            <div className="xl:hidden block w-full bg-white py-2 px-4 ">
+              <button
+                className="bg-accent border-1 px-5 py-2 rounded-sm font-semibold flex justify-center items-center cursor-pointer hover:bg-teal-600 hover:text-white"
+                onClick={() => setOpen(true)}
+              >
+                <SlidersHorizontal />
+                <span className="px-2">filter</span>
+              </button>
+            </div>
+          )}
+          <section className=" gap-6 mt-5 w-full flex flex-wrap">
+            {products.slice(0, visibleCount).map((product, i) => {
+              return (
+                <div
+                  className="sm:h-96 sm:w-64  w-full h-72 border bg-white border-gray-100 rounded-md transition cursor-pointer flex flex-col justify-between hover:shadow-lg p-4 shadow-md"
+                  key={product._id}
+                >
+                  <Link href={`/products/${product.sku}`}>
+                    <div className="w-full sm:h-60 h-40 flex justify-center items-center ">
+                      <Image
+                        src={product.image}
+                        alt="product_image"
+                        height={200}
+                        width={200}
+                        className="object-contain"
+                      />
+                    </div>
+                    <div className="mx-2">
+                      <p className="text-lg text-gray-500 font-semibold">
+                        {" "}
+                        $ {product.price}
+                      </p>
+                      <p className="py-1 ">{product.title}</p>
+                    </div>
+                  </Link>
+
+                  <button
+                    className=" flex justify-center  items-center bg-gray-100   text-sm font-medium hover:text-white transition cursor-pointer rounded-sm"
+                    onClick={() =>
+                      fetchCart({ productId: product._id, quantity: 1 })
+                    }
+                  >
+                    <span className="flex flex-1 justify-center hover:bg-teal-500 py-2 rounded-l-sm">
+                      Add
+                    </span>
+                    <span className="hover:bg-teal-600 px-3 py-2 rounded-r-sm bg-gray-200">
+                      +
+                    </span>
+                  </button>
+                </div>
+              );
+            })}
+          </section>
+          {visibleCount < products.length && (
+            <div className="my-8">
+              <button
+                onClick={handleLoadMore}
+                className="bg-teal-600 text-white py-2 px-6 rounded shadow hover:bg-teal-700 transition"
+              >
+                Load More
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
+    </>
+  );
 }

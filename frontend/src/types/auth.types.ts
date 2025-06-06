@@ -1,9 +1,12 @@
 export interface LoginResponse {
-  _id: string;
-  email: string;
-  accessToken:string,
+  user: {
+    name:string
+    _id: string;
+    email: string;
+  }
+  accessToken: string
 }
-
+export type tokenResponse = string
 export interface SignUpResponse {
   _id: string;
   name: string;
@@ -17,11 +20,14 @@ export interface SignUpPayload {
   name: string;
   email: string;
   password: string;
-  
 }
 
+
 export interface InitialUserValue {
-  user: SignUpResponse | LoginResponse | null;
+  auth: {
+    user: SignUpResponse | LoginResponse | null;
+    accessToken: string | null
+  }
   loading: boolean;
   error: string;
 }

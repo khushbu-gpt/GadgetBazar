@@ -1,5 +1,5 @@
 
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeLatest } from "redux-saga/effects";
 import {
   loginApi,  
   signUpApi,
@@ -10,6 +10,7 @@ import {
   LoginSuccess,
   LogOutRequest,
   LogOutSuccess,
+  selectToken,
   SignUpFailure,
   SignUpRequest,
   SignUpSuccess,
@@ -22,17 +23,9 @@ import { toast } from "react-toastify";
 export function* loginSaga(action:PayloadAction<LoginPayload>) {
 
   try {
-    const response= yield call(loginApi, action.payload);
-    const {user,accessToken}=response.data
-        if (!accessToken) {
-      throw new Error("Access token not found in response");
-    }
+    const response:LoginResponse= yield call(loginApi, action.payload);
     yield put(LoginSuccess(response));
     toast.success("Login Successful!")
-    if(typeof window !== "undefined"){
-      localStorage.setItem("token",accessToken)
-    }
-
   } catch (error) {
     yield put(LoginFailure((error as Error).message||"Login Failed"));
     toast.error("Login Failed")
@@ -55,10 +48,8 @@ export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
 export function* LogOutSaga() {
   try {
     const response= yield call(LogOutRequest);
-      if(typeof window !== "undefined"){
-      localStorage.removeItem("token")
-    }
-    yield put(LogOutSuccess(response));
+       yield put(LogOutSuccess(response));
+       console.log("logout",response)
     toast.success("LogOut Successful!")
   } catch (error:any) {
     yield put(LoginFailure(error.message||"SignUp Failed!"));
