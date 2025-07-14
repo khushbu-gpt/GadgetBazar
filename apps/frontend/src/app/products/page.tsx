@@ -77,7 +77,7 @@ export default function Products() {
       <Cart />
       <main className=" xl:flex bg-gray-100 min-h-screen">
         <Sidebar isMobile={false} setOpen={setOpen} />
-        <div className="xl:w-[75%]  flex-col flex items-center w-full h-full px-4 xl:ml-[25%] xl:mt-20 mb-5 mt-14">
+        <div className="xl:w-[75%]  flex-col flex items-center w-full h-full px-4 xl:ml-[25%] xl:mt-20 mb-5 mt-18">
           <div className="mt-5 w-full ">
             <Image
               src={"/images/Gadget-banners.webp"}

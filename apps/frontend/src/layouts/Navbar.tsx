@@ -40,7 +40,7 @@ export function Navbar() {
       </div>
 
       {menu ? (
-        <div className="flex flex-col h-screen bg-white z-100 sm:w-96 w-full fixed top-0 right-0  px-6 font-semibold py-2 text-sm  shadow-md">
+        <div className="flex flex-col h-screen bg-white z-100 sm:w-80 w-full fixed top-0 left-0  px-6 font-semibold py-2 text-sm  shadow-md">
           <div className=" border-b-1 border-gray-200 py-4 flex justify-between w-full">
             <Image
               src={"/images/Logo.webp"}
@@ -68,7 +68,7 @@ export function Navbar() {
               <Link href="/contact">Contact</Link>
             </li>
           </ul>
-          <div className="flex flex-col w-72">
+          <div className="flex flex-col w-72 pr-4">
             <Link
               href="/login"
               className=" bg-teal-700   py-3  px-4 rounded-sm font-semibold text-white text-sm cursor-pointer my-2  text-center"
@@ -78,14 +78,14 @@ export function Navbar() {
 
             <Link
               href="/register"
-              className=" bg-teal-700   py-3  px-4 rounded-sm font-semibold text-white text-sm cursor-pointer my-2 text-center "
+              className=" bg-teal-700   py-3  px-4 rounded-sm font-semibold text-white text-sm cursor-pointer my-2 text-center  "
             >
               Become a Seller
             </Link>
           </div>
         </div>
       ) : (
-        <div className="lg:hidden  absolute transition  text-center left-0   flex justify-center items-center px-2">
+        <div className="lg:hidden  absolute transition  text-center left-44  flex justify-center items-center px-2">
           <button
             className="cursor-pointer px-4 text-center"
             aria-label="menu-bar"
