@@ -33,8 +33,9 @@ export function errorHandler(
     status = "fail";
   }
 
-  return res.status(statusCode).json({
+  return res.json({
     status,
+    statusCode,
     success: false,
     message,
   });
