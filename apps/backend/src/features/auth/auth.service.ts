@@ -6,6 +6,7 @@ import { loginZodType, registeZodType } from "./auth.validation";
 
 export async function registerService(data: registeZodType) {
   const user= await UserModel.create(data);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {password:_password,...rest}=user.toObject()
   return rest
 }
@@ -22,6 +23,7 @@ export async function loginService(data: loginZodType) {
    role:user.role,
    },)
   if (!tokens) throw new AppError("Token Genrated Error", 500);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {password:_password,...rest}=user
   return {user:rest,tokens};
 }

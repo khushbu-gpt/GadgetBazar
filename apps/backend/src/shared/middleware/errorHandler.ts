@@ -1,18 +1,21 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { AppError } from "../utils/AppError";
 import mongoose from "mongoose";
+import { MongoError } from "mongodb";
 
 export function errorHandler(
-  err: Error | AppError | mongoose.Error,
+  err: unknown,
   _req: Request,
   res: Response,
-  next:NextFunction
 ) {
   let statusCode = 500;
+  // let statusCode = typeof err === "object" && "code" in err && err.code || 500;
   let message = "Something went wrong";
   let status = "error";
 
-  if ((err as any).code === 11000 && (err as any).keyPattern?.email) {
+
+
+  if ((err as MongoError)?.code === 11000) {
     statusCode = 400;
     message = "Email already exists";
     status = "fail";
@@ -30,7 +33,7 @@ export function errorHandler(
     status = "fail";
   }
 
- res.status(statusCode).json({
+  return res.status(statusCode).json({
     status,
     success: false,
     message,

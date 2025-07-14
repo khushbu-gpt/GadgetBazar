@@ -17,7 +17,7 @@ export async function addCategory(
       message: "category created successful!",
       status_code: 201,
     });
-  } catch (error: any) {
+  } catch (error) {
     next(error);
   }
 }
@@ -36,7 +36,7 @@ export async function getSingeleCategory(
       message: "category found successfull!",
       status_code: 200,
     });
-  } catch (error: any) {
+  } catch (error) {
     next(error);
   }
 }
@@ -55,7 +55,7 @@ export async function getAllCategory(
       message: "category found successfull!",
       status_code: 200,
     });
-  } catch (error: any) {
+  } catch (error) {
     next(error);
   }
 }

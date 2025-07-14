@@ -1,4 +1,4 @@
-import mongoose, { model, Schema, Types } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { ICategory } from "./category.types";
 
 const categorySchema = new Schema<ICategory>({

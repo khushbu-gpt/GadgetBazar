@@ -1,16 +1,5 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import "dotenv/config";
-declare global {
-  namespace Express {
-    interface Request {
-      user?: {
-        uid: string;
-        email: string;
-        role: string;
-      };
-    }
-  }
-}
 import cors from "cors";
 import { connectDB } from "./shared/config/db";
 import { authRouter } from "./features/auth/auth.routes";
@@ -28,17 +17,17 @@ app.use("/auth", authRouter);
 app.use("/", uploadRouter);
 app.use("/products", productRouter);
 app.use("/categories", categoryRouter);
-app.use("/address",addressRouter)
-app.use("/cart",cartRouter)
+app.use("/address", addressRouter)
+app.use("/cart", cartRouter)
 app.use(errorHandler);
 
 connectDB()
-    .then(() => {
-        app.listen(PORT, () => {
-            console.log(`SERVER IS RUNNING AT ${PORT}`);
-        });
-    })
-    .catch((error) => {
-        console.error("Server connection failed", error.message);
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`SERVER IS RUNNING AT ${PORT}`);
     });
+  })
+  .catch((error) => {
+    console.error("Server connection failed", error.message);
+  });
 

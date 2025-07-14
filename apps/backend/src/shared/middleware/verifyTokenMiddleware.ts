@@ -16,8 +16,8 @@ export const VerifyAccessTokenMiddleWare = (
     const decoded = decodeToken(token);
     req.user = decoded;
 
-    next(); // ✅ call next when done
-  } catch (error) {
+    next();
+  } catch {
     next(new AppError("Invalid or expired token", 401));
   }
 };

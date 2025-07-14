@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import { IProduct } from "./product.types";
 export const productSchema = new mongoose.Schema<IProduct>(
   {

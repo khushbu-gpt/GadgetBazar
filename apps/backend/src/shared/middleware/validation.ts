@@ -4,9 +4,9 @@ import { AppError } from "../utils/AppError";
 
 
 type ZodSchema={
-     body?: AnyZodObject | any; 
-     query?: AnyZodObject|any;
-     params?: AnyZodObject|any; 
+     body?: AnyZodObject ; 
+     query?: AnyZodObject;
+     params?: AnyZodObject; 
 }
 export const zodValidation=(schema:ZodSchema)=>(req:Request,res:Response,next:NextFunction)=>{
 try{

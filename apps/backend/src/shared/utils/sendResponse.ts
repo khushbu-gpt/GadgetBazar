@@ -2,7 +2,7 @@ import { Response } from "express"
 
 export type JSONResponse={
     status?:"success"|"error",
-    data?:any,
+    data?:unknown,
    status_code?:number,
    message?:string
 }

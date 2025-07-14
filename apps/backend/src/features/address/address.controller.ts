@@ -34,7 +34,7 @@ export async function updateAddressController(
       status_code: 200,
       message: "Address updated!",
     });
-  } catch (error) {
+  } catch {
     next(new AppError("update Address failed", 500));
   }
 }
@@ -53,7 +53,7 @@ export async function getAddressController(
       status_code: 200,
       message: "Address retrieve!",
     });
-  } catch (error) {
+  } catch {
     next(new AppError("Address retrieve failed", 500));
   }
 }
@@ -72,7 +72,7 @@ export async function getAddressByIdController(
       status_code: 200,
       message: "Address retrieve!",
     });
-  } catch (error) {
+  } catch {
     next(new AppError("Address retrieve failed", 500));
   }
 }
@@ -91,7 +91,7 @@ export async function deleteAddressController(
       status_code: 200,
       message: "Address retrieve!",
     });
-  } catch (error) {
+  } catch {
     next(new AppError("Address retrieve failed"));
   }
 }

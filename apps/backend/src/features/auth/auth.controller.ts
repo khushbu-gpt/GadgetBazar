@@ -17,7 +17,7 @@ export async function registerUserController(
       message: "user register success!",
       status_code: 201,
     });
-  } catch (error:any) {
+  } catch (error) {
     next  (error)
   }
 }

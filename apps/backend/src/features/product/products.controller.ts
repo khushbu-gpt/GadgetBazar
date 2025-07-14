@@ -96,7 +96,7 @@ export async function getProductsByCategory(
 ) {
   try {
     const { category, title } = req.query;
-    const filter: any = {};
+    const filter: Record<string, unknown> = {};
     if (category) {
       filter.category = category;
     }

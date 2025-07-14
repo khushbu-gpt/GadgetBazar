@@ -17,7 +17,7 @@ export const createCartService = async (
   let cart = await CartModel.findOne({ user: userId });
   const price = product.price;
   const itemSubtotal = price * quantity;
-  const itemDiscount = ((product as any).discount || 0) * quantity;
+  const itemDiscount = ((product as { discount?: number }).discount || 0) * quantity;
 
   const newItem = {
     productId: new Types.ObjectId(productId),

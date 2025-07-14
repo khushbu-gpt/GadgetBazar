@@ -19,12 +19,10 @@ export const userSchema=new mongoose.Schema<IUser>({
 
 
 userSchema.pre("save", async function (next) {
-    const user = this;
-    console.log(user);
-    try {
-      user.password = await hashPassword(user.password);
+  try {
+      this.password = await hashPassword(this.password);
       next();
-    } catch (error) {
+    } catch {
       next(new AppError("Unexpected Error!", 500));
     }
   });

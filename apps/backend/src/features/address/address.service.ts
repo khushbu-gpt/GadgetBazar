@@ -1,6 +1,4 @@
-import mongoose from "mongoose"
 import { AppError } from "../../shared/utils/AppError"
-import { UserModel } from "../auth/auth.model"
 import { AddressModel } from "./address.model"
 import { getAddressBYId, updateByZodaddress, zodaddress } from "./address.validation"
 
