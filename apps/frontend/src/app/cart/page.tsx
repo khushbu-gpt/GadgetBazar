@@ -9,7 +9,6 @@ import {
 import { ShoppingBag } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deleteCartRequest,
   selectCart,
   updateCartRequest,
 } from "@/redux/slice/cart.slice";
@@ -17,7 +16,6 @@ import {
 export default function Cart() {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
-  console.log("cart", cart);
 
   return (
     <div className="fixed top-1/2 right-0 z-50">
@@ -44,7 +42,7 @@ export default function Cart() {
             </div>
           ) : (
             <ul className="space-y-4">
-              {cart?.data?.items.map((item: any) => (
+              {cart?.data?.items.map((item) => (
                 <li
                   key={item.productId}
                   className="border p-3 flex justify-between items-center rounded"

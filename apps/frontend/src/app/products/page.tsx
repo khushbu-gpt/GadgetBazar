@@ -4,7 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import Cart from "@/app/cart/page";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal} from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createCartRequest,
@@ -34,9 +34,7 @@ export default function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        let url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products`);
-        console.log(url);
-
+        const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products`);
         const filters: Partial<{
           category: string | null;
           title: string | null;
@@ -49,14 +47,13 @@ export default function Products() {
         const filtersArray = Object.entries(filters);
         const params = new URLSearchParams(url.search);
 
-        for (let [key, value] of filtersArray) {
+        for (const [key, value] of filtersArray) {
           if (value) params.append(key, value);
         }
         const urlAsString = url.toString() + "?" + params.toString();
         console.log(urlAsString);
         const response = await axios.get(urlAsString);
         setProducts(response.data.data);
-        console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -103,7 +100,7 @@ export default function Products() {
             </div>
           )}
           <section className="gap-6 my-5 w-full flex flex-wrap">
-            {products.slice(0, visibleCount).map((product: any) => {
+            {products.slice(0, visibleCount).map((product) => {
               const itemInCart = cart?.data?.items.find(
                 (item) => item.productId.toString() === product._id.toString()
               );

@@ -16,9 +16,10 @@ const data = [
             height={150}
         />,
         lists: ["New York, USA", "demo@demo.com",
-            <div className="flex gap-2">
+            <div className="flex gap-2" key="social-icons">
                 <Facebook /><Twitter /><Instagram />
-            </div>]
+            </div>
+            ]
     },
     {
         title: "Explore",

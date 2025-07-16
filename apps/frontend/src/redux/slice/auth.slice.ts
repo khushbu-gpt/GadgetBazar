@@ -1,4 +1,4 @@
-import { InitialUserValue, LoginPayload, LoginResponse, SignUpPayload, SignUpResponse, tokenResponse } from "@/types/auth.types";
+import { InitialUserValue, LoginResponse, SignUpResponse } from "@/types/auth.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getLocalStore } from 'next-persist';
 export const initialState: InitialUserValue = {
@@ -14,7 +14,7 @@ export const authSlice = createSlice({
   name: "Auth",
   initialState: persistedState,
   reducers: {
-    LoginRequest: (state, _action: PayloadAction<LoginPayload>) => {
+    LoginRequest: (state,) => {
       state.loading = true;
       state.error = "";
     },
@@ -26,7 +26,7 @@ export const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    SignUpRequest: (state, action: PayloadAction<SignUpPayload>) => {
+    SignUpRequest: (state,) => {
       state.loading = true;
       state.error = "";
     },
@@ -37,11 +37,7 @@ export const authSlice = createSlice({
     SignUpFailure: (state, action: PayloadAction<string>) => {
       state.loading = false; state.error = action.payload;
     },
-    LogOutRequest: (state,) => {
-      state.loading = true;
-      state.error = "";
-    },
-    LogOutSuccess: (state) => {
+    LogOutRequest: (state) => {
       state.loading = false;
       state.auth = {
         user: null,
@@ -49,17 +45,13 @@ export const authSlice = createSlice({
       };
       state.error = "";
     },
-    LogOutFailure: (state, action: PayloadAction<string>) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
   },
   selectors: {
-    selectAuth: (state: any) => state.auth,
-    selectUser: (state: any) => state.auth.user,
-    selectToken: (state: any) => state.auth.accessToken,
-    selectLoading: (state: any) => state.loading,
-    selectError: (state: any) => state.error,
+    selectAuth: (state) => state.auth,
+    selectUser: (state) => state.auth.user,
+    selectToken: (state) => state.auth.accessToken,
+    selectLoading: (state) => state.loading,
+    selectError: (state) => state.error,
   },
 });
 
@@ -71,7 +63,5 @@ export const {
   SignUpFailure,
   SignUpSuccess,
   LogOutRequest,
-  LogOutSuccess,
-  LogOutFailure
 } = authSlice.actions;
 export const { selectAuth, selectLoading, selectError, selectToken, selectUser } = authSlice.selectors;

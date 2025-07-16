@@ -156,7 +156,7 @@ export function Navbar() {
         {isLoggedin ? (
           <button
             className="bg-teal-700 py-3 px-4 rounded-sm font-semibold text-white text-sm cursor-pointer"
-            onClick={() => hadleLogout()}
+            onClick={hadleLogout}
           >
             LogOut
           </button>
@@ -166,7 +166,7 @@ export function Navbar() {
               <DialogTrigger className="bg-teal-700 lg:py-3 py-2 px-4 rounded-sm font-semibold text-white text-sm cursor-pointer hidden lg:block">
                 join
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="h-[550px]">
                 <DialogTitle></DialogTitle>
                 <LoginPage />
               </DialogContent>

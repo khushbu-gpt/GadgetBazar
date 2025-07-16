@@ -14,9 +14,10 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { LoginRequest } from "@/redux/slice/auth.slice";
 import { LoginPayload } from "@/types/auth.types";
+import { AppDispatch } from "@/redux/store";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const {
     register,
@@ -26,7 +27,6 @@ export default function LoginPage() {
   } = useForm({
     resolver: zodResolver(loginSchema),
   });
-
   const onSubmit = (data: LoginPayload) => {
     dispatch(LoginRequest(data));
     router.push("/");
@@ -35,9 +35,8 @@ export default function LoginPage() {
 
   return (
     <>
-  <div className="h-full w-full flex justify-center items-center">
-      <div className="flex flex-col items-center bg-white px-6 py-12 sm:px-10 sm:py-20 rounded  border  shadow-md  justify-center  w-96 
-     ">
+   <div className="relative">
+    <div className="flex flex-col items-center bg-white px-6 py-12 sm:px-10 sm:py-20 rounded border shadow-md w-96 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <div>
           <Image
             src="/images/Logo.webp"
@@ -120,7 +119,7 @@ export default function LoginPage() {
 
           <div className="text-sm text-center">
             <p>
-              Don't have an account?{" "}
+              Don&lsquo;t have an account?{" "}
               <Link href="/register" className="text-teal-500 hover:underline">
                 Register
               </Link>

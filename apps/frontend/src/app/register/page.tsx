@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff } from "lucide-react";
 import {useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer} from "react-toastify";
 import { registerSchema } from "@/validation/authValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { SignUpRequest } from "@/redux/slice/auth.slice";
 import { SignUpPayload } from "@/types/auth.types";
 
@@ -28,7 +28,7 @@ export default function RegisterPage() {
     resolver: zodResolver(registerSchema),
   });
   
-  const onSubmit = (data:SignUpPayload) => {
+  const onSubmit = (data) => {
       dispatch(SignUpRequest(data))
       router.push("/login")
       reset()

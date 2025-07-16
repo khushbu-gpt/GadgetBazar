@@ -1,7 +1,5 @@
-import { tokenResponse } from "@/types/auth.types";
-import { CartPayload, getCartApiResponse, } from "@/types/cart.types";
+import {getCartApiResponse, } from "@/types/cart.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getLocalStore } from "next-persist";
 export interface intialValue {
     cart: getCartApiResponse | null,
     loading: boolean,
@@ -12,12 +10,11 @@ export const initialState: intialValue = {
     loading: true,
     error: ""
 }
-// const persistedState=getLocalStore("Cart",initialState)
 export const cartSlice = createSlice({
     name: "Cart",
     initialState,
     reducers: {
-        getCartRequest: (state,action:PayloadAction<CartPayload>) => {
+        getCartRequest: (state) => {
             state.loading = true;
             state.error = "";
         },
@@ -30,7 +27,7 @@ export const cartSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        createCartRequest: (state, _action: PayloadAction<CartPayload>) => {
+        createCartRequest: (state) => {
             state.loading = true;
             state.error = "";
         },
@@ -43,7 +40,7 @@ export const cartSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        updateCartRequest: (state, _action: PayloadAction<CartPayload>) => {
+        updateCartRequest: (state) => {
             state.loading = true;
             state.error = "";
         },

@@ -1,5 +1,4 @@
-
-import { call, put, select, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import {
   loginApi,  
   signUpApi,
@@ -8,8 +7,6 @@ import {
   LoginFailure,
   LoginRequest,
   LoginSuccess,
-  LogOutRequest,
-  LogOutSuccess,
   SignUpFailure,
   SignUpRequest,
   SignUpSuccess,
@@ -34,31 +31,15 @@ export function* loginSaga(action:PayloadAction<LoginPayload>) {
 export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
   try {
     const response: SignUpResponse = yield call(signUpApi, action.payload);
-
     yield put(SignUpSuccess(response));
     toast.success("SignUp Successful!")
-  } catch (error:any) {
-    yield put(SignUpFailure(error.message||"SignUp Failed!"));
+  } catch (error) {
+    yield put(SignUpFailure((error as Error).message||"SignUp Failed!"));
     toast.error(`SignUp Failed!`)
 
   }
 }
-
-export function* LogOutSaga() {
-  try {
-    const response= yield call(LogOutRequest);
-       yield put(LogOutSuccess(response));
-       console.log("logout",response)
-    toast.success("LogOut Successful!")
-  } catch (error:any) {
-    yield put(LoginFailure(error.message||"SignUp Failed!"));
-    toast.error(`LogOut Failed!`)
-
-  }
-}
 export function* watchAuthSaga() {
-  yield takeLatest(SignUpRequest, signUpSaga);
-  yield takeLatest(LoginRequest, loginSaga);
-  yield takeLatest(LogOutRequest, LogOutSaga);
-
+  yield takeLatest(SignUpRequest.type, signUpSaga);
+  yield takeLatest(LoginRequest.type, loginSaga);
 }

@@ -13,13 +13,10 @@ export default function Sidebar({
   isMobile = false,
   setOpen,
 }: {
-  isMobile: Boolean;
+  isMobile: boolean;
   setOpen: (value: boolean) => void;
 }) {
-  const { setSelectedCategory } = useContext(
-    FilterProductCategory
-  );
-  
+  const { setSelectedCategory } = useContext(FilterProductCategory);
 
   return (
     <>
@@ -86,9 +83,9 @@ export default function Sidebar({
                         setSelectedCategory(item.name.toLowerCase())
                       }
                     >
-                    <span> {item.icon(48)}</span>
+                      <span> {item.icon(48)}</span>
 
-                    <span> {item.name}</span>
+                      <span> {item.name}</span>
                     </button>
                   </div>
                 ))}
