@@ -15,9 +15,7 @@ import { LoginPayload, LoginResponse, SignUpPayload, SignUpResponse } from "@/ty
 import { PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
-
 export function* loginSaga(action:PayloadAction<LoginPayload>) {
-
   try {
     const response:LoginResponse= yield call(loginApi, action.payload);
     yield put(LoginSuccess(response));
@@ -36,7 +34,6 @@ export function* signUpSaga(action: PayloadAction<SignUpPayload>) {
   } catch (error) {
     yield put(SignUpFailure((error as Error).message||"SignUp Failed!"));
     toast.error(`SignUp Failed!`)
-
   }
 }
 export function* watchAuthSaga() {

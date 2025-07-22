@@ -28,7 +28,7 @@ export default function RegisterPage() {
     resolver: zodResolver(registerSchema),
   });
   
-  const onSubmit = (data) => {
+  const onSubmit = (data:SignUpPayload) => {
       dispatch(SignUpRequest(data))
       router.push("/login")
       reset()

@@ -17,6 +17,7 @@ import {
 import { call, put, select, takeLatest } from "redux-saga/effects";
 import { CartPayload, getCartApiResponse } from "@/types/cart.types";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 export function* createCartSaga(action: PayloadAction<CartPayload>) {
   try {
@@ -26,6 +27,7 @@ export function* createCartSaga(action: PayloadAction<CartPayload>) {
     console.log("createCartSaga:",response)
   } catch (error) {
     yield put(createCartFailure((error as Error).message));
+    toast.error("unuthorized")
   }
 }
 
@@ -59,8 +61,8 @@ export function* deleteCartSaga() {
   }
 }
 export function* watchCartSaga() {
-  yield takeLatest(createCartRequest.type, createCartSaga);
+  yield takeLatest(createCartRequest, createCartSaga);
   yield takeLatest(getCartRequest, getCartSaga);
-  yield takeLatest(updateCartRequest.type, updateCartSaga);
+  yield takeLatest(updateCartRequest, updateCartSaga);
   yield takeLatest(deleteCartRequest, deleteCartSaga);
 }

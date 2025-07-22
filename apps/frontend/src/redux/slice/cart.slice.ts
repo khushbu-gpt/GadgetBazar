@@ -1,4 +1,4 @@
-import {getCartApiResponse, } from "@/types/cart.types";
+import { CartPayload, getCartApiResponse, } from "@/types/cart.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface intialValue {
     cart: getCartApiResponse | null,
@@ -14,7 +14,8 @@ export const cartSlice = createSlice({
     name: "Cart",
     initialState,
     reducers: {
-        getCartRequest: (state) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        getCartRequest: (state, _action: PayloadAction<CartPayload>) => {
             state.loading = true;
             state.error = "";
         },
@@ -27,7 +28,8 @@ export const cartSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        createCartRequest: (state) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        createCartRequest: (state, action: PayloadAction<CartPayload>) => {
             state.loading = true;
             state.error = "";
         },
@@ -40,7 +42,8 @@ export const cartSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        updateCartRequest: (state) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        updateCartRequest: (state, _action: PayloadAction<CartPayload>) => {
             state.loading = true;
             state.error = "";
         },
@@ -53,7 +56,8 @@ export const cartSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        deleteCartRequest: (state) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        deleteCartRequest: (state, _action: PayloadAction<CartPayload>) => {
             state.loading = true;
             state.error = "";
         },

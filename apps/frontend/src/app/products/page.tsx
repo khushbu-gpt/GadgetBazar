@@ -4,7 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import Cart from "@/app/cart/page";
-import { SlidersHorizontal} from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createCartRequest,
@@ -41,7 +41,7 @@ export default function Products() {
         }> = {};
 
         if (selectedCategory) filters.category = selectedCategory;
-        
+
         if (searchProducts) filters.title = searchProducts;
 
         const filtersArray = Object.entries(filters);
@@ -134,13 +134,15 @@ export default function Products() {
                       <button
                         className=" flex flex-1 text-center justify-center items-center text-sm  py-2 cursor-pointer"
                         onClick={() =>
-                          dispatch(updateCartRequest({
-                            productId: product._id,
-                            quantity: itemInCart.quantity + 1,
-                          }))
+                          dispatch(
+                            updateCartRequest({
+                              productId: product._id,
+                              quantity: itemInCart.quantity + 1,
+                            })
+                          )
                         }
                       >
-                        update cart
+                        Add
                       </button>
                     ) : (
                       <button
@@ -149,10 +151,9 @@ export default function Products() {
                           fetchCart({ productId: product._id, quantity: 1 })
                         }
                       >
-                        Add
+                        Add to cart
                       </button>
                     )}
-
                   </div>
                 </div>
               );

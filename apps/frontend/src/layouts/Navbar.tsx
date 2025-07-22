@@ -25,7 +25,12 @@ export function Navbar() {
   );
   const hadleLogout = () => {
     dispatch(LogOutRequest());
-    dispatch(deleteCartRequest());
+    dispatch(
+      deleteCartRequest({
+        productId: "",
+        quantity: 0,
+      })
+    );
   };
 
   return (

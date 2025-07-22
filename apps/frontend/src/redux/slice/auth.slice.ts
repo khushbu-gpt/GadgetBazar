@@ -1,4 +1,4 @@
-import { InitialUserValue, LoginResponse, SignUpResponse } from "@/types/auth.types";
+import { InitialUserValue, LoginPayload, LoginResponse, SignUpPayload, SignUpResponse } from "@/types/auth.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getLocalStore } from 'next-persist';
 export const initialState: InitialUserValue = {
@@ -14,7 +14,8 @@ export const authSlice = createSlice({
   name: "Auth",
   initialState: persistedState,
   reducers: {
-    LoginRequest: (state,) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    LoginRequest: (state, _action: PayloadAction<LoginPayload>) => {
       state.loading = true;
       state.error = "";
     },
@@ -26,7 +27,8 @@ export const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    SignUpRequest: (state,) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    SignUpRequest: (state, _action: PayloadAction<SignUpPayload>) => {
       state.loading = true;
       state.error = "";
     },

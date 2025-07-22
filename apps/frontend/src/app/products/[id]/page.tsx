@@ -10,14 +10,20 @@ interface Product {
   category: string;
 }
 
-
-export default async function fetchProductsById({ params }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   let product: Product | null = null;
+  const _params = await params;
+  const id = await _params.id;
 
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/${params.id}`);
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/products/${id}`
+    );
     product = response.data.data;
-    console.log("Product fetched:", product);
   } catch (error) {
     console.error("Error fetching product:", error);
   }
@@ -26,8 +32,8 @@ export default async function fetchProductsById({ params }) {
     <>
       <Navbar />
       {product ? (
-        <div className="flex justify-between items-center  w-full h-screen px-40 ">
-          <div className="w-1/3 flex justify-center items-center  h-full">
+        <div className="flex justify-between items-center w-full h-screen px-40">
+          <div className="w-1/3 flex justify-center items-center h-full">
             <Image
               src={product.image}
               alt={product.title}
@@ -36,15 +42,12 @@ export default async function fetchProductsById({ params }) {
               className="bg-cover"
             />
           </div>
-
-          <div className="right flex flex-col place-items-start w-1/3 ">
+          <div className="right flex flex-col place-items-start w-1/3">
             <h1 className="text-2xl font-semibold py-2">{product.title}</h1>
-            <p className="py-2 text-xl ">Price: ₹{product.price}</p>
+            <p className="py-2 text-xl">Price: ₹{product.price}</p>
             <button className="w-full py-4 text-center bg-teal-600 text-white rounded-md cursor-pointer my-2">
               Add To Shopping Cart
             </button>
-            <div>
-            </div>
           </div>
         </div>
       ) : (

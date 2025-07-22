@@ -12,11 +12,11 @@ import {
   selectCart,
   updateCartRequest,
 } from "@/redux/slice/cart.slice";
+import { ToastContainer } from "react-toastify";
 
 export default function Cart() {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
-
   return (
     <div className="fixed top-1/2 right-0 z-50">
       <Sheet>
@@ -115,6 +115,7 @@ export default function Cart() {
           </div>
         </SheetContent>
       </Sheet>
+      <ToastContainer/>
     </div>
   );
 }
