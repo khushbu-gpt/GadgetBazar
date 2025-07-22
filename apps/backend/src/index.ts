@@ -11,7 +11,7 @@ import { addressRouter } from "./features/address/address.routes";
 import { cartRouter } from "./features/cart/cart.routes";
 const app = express();
 const PORT = process.env.PORT || 5000;
-app.use(cors({ origin: ["http://localhost:3000"] }));
+app.use(cors({ origin: ["http://localhost:3000", "https://mybazzzar.vercel.app"] }));
 app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/", uploadRouter);

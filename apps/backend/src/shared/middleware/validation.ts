@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { AnyZodObject, ZodError } from "zod";
 import { AppError } from "../utils/AppError";
 
-
 type ZodSchema={
      body?: AnyZodObject ; 
      query?: AnyZodObject;
