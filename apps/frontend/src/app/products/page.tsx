@@ -51,7 +51,6 @@ export default function Products() {
           if (value) params.append(key, value);
         }
         const urlAsString = url.toString() + "?" + params.toString();
-        console.log(urlAsString);
         const response = await axios.get(urlAsString);
         setProducts(response.data.data);
       } catch (error) {

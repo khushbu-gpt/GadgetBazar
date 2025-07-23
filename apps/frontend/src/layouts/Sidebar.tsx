@@ -9,6 +9,7 @@ import { FilterProductCategory } from "@/context/FilterProductContext";
 import Image from "next/image";
 import { categories } from "@/constants/CategoryList";
 import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
 export default function Sidebar({
   isMobile = false,
   setOpen,
@@ -17,6 +18,7 @@ export default function Sidebar({
   setOpen: (value: boolean) => void;
 }) {
   const { setSelectedCategory } = useContext(FilterProductCategory);
+  const router=useRouter()
 
   return (
     <>
@@ -45,7 +47,11 @@ export default function Sidebar({
             >
               <button
                 className="flex gap-3 justify-center items-center cursor-pointer"
-                onClick={() => setSelectedCategory(item.name.toLowerCase())}
+                onClick={() =>{
+                  setSelectedCategory(item.name.toLowerCase())
+                  setOpen(false)
+                  router.push("/products")
+                }}
               >
                 <span> {item.icon(24)}</span>
                 <span className="text-base font-semibold"> {item.name}</span>

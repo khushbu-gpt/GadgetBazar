@@ -27,7 +27,7 @@ export function* createCartSaga(action: PayloadAction<CartPayload>) {
     console.log("createCartSaga:",response)
   } catch (error) {
     yield put(createCartFailure((error as Error).message));
-    toast.error("unuthorized")
+    toast.error("please login to continue")
   }
 }
 

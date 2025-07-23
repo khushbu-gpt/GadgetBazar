@@ -28,7 +28,7 @@ export default function Cart() {
             ${cart?.data?.totalPrice}
           </span>
         </SheetTrigger>
-        <SheetContent className="w-[90vw] sm:w-[400px] overflow-y-auto">
+        <SheetContent className="w-[90vw] sm:w-[400px] overflow-y-auto min-h-screen">
           <SheetHeader>
             <SheetTitle className="text-teal-700 text-lg border-b pb-2 mb-2 flex items-center gap-2">
               <ShoppingBag className="w-5 h-5" />
@@ -41,7 +41,7 @@ export default function Cart() {
               <p className="text-gray-500 ml-4">Your cart is empty</p>
             </div>
           ) : (
-            <ul className="space-y-4">
+            <ul className="space-y-4 min-h-screen">
               {cart?.data?.items.map((item) => (
                 <li
                   key={item.productId}
@@ -105,7 +105,7 @@ export default function Cart() {
             </ul>
           )}
 
-          <div className=" bottom-5 fixed right-5">
+          <div className=" bottom-5 fixed right-5 ">
             <button className="w-full py-2 bg-teal-700 text-white rounded-full flex  items-center gap-40 font-medium px-5">
               Checkout
               <span className="bg-white text-teal-700 px-3 py-2 rounded-full">
@@ -115,6 +115,7 @@ export default function Cart() {
           </div>
         </SheetContent>
       </Sheet>
+      
       <ToastContainer/>
     </div>
   );
