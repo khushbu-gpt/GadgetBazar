@@ -41,7 +41,6 @@ export default function Products() {
         }> = {};
 
         if (selectedCategory) filters.category = selectedCategory;
-
         if (searchProducts) filters.title = searchProducts;
 
         const filtersArray = Object.entries(filters);
@@ -59,7 +58,7 @@ export default function Products() {
     };
     fetchProducts();
   }, [selectedCategory, searchProducts]);
-
+ 
   const fetchCart = (product: CartPayload) => {
     dispatch(createCartRequest(product));
   };

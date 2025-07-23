@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { OffersList } from "@/constants/OffersList";
 import Footer from "@/layouts/Footer";
 import { Navbar } from "@/layouts/Navbar";

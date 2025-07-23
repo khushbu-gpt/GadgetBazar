@@ -6,7 +6,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { use } from "react"; // ← Required for unwrapping the promise
+import { use } from "react";
 
 interface Product {
   _id: string;
@@ -21,7 +21,7 @@ export default function Page({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = use(params); // ← unwrap the Promise
+  const { id } = use(params);
 
   const dispatch = useDispatch();
   const [product, setProduct] = useState<Product | null>(null);

@@ -32,6 +32,7 @@ export default function RootLayout({
         <ContextWrapper>
           <StoreProvider>{children}</StoreProvider>
         </ContextWrapper>
+
       </body>
     </html>
   );
