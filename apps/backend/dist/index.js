@@ -566,12 +566,28 @@ categoryRouter.get("/", getSingeleCategory);
 categoryRouter.get("/", getAllCategory);
 
 // src/shared/middleware/errorHandler.ts
-function errorHandler(_err, _req, res, _next) {
-  res.send({
-    // status,
-    // statusCode,
-    // success: false,
-    error: "error"
+import mongoose5 from "mongoose";
+function errorHandler(err, _req, res, _next) {
+  let statusCode = 500;
+  let message = "Something went wrong";
+  let status = "error";
+  if (err?.code === 11e3) {
+    statusCode = 400;
+    message = "Email already exists";
+    status = "fail";
+  } else if (err instanceof AppError) {
+    statusCode = err.statusCode || 500;
+    message = err.message;
+    status = err.status || "error";
+  } else if (err instanceof mongoose5.Error) {
+    statusCode = 400;
+    message = err.message;
+    status = "fail";
+  }
+  return res.status(statusCode).json({
+    status,
+    success: false,
+    message
   });
 }
 
@@ -579,7 +595,7 @@ function errorHandler(_err, _req, res, _next) {
 import { Router as Router5 } from "express";
 
 // src/features/address/address.model.ts
-import mongoose5, { model as model2, Schema as Schema2 } from "mongoose";
+import mongoose6, { model as model2, Schema as Schema2 } from "mongoose";
 var addressBaseSchema = new Schema2({
   fullname: { type: String, required: true },
   address1: {
@@ -604,7 +620,7 @@ var addressBaseSchema = new Schema2({
 var addressSchema = new Schema2(
   {
     uid: {
-      type: mongoose5.Schema.Types.ObjectId,
+      type: mongoose6.Schema.Types.ObjectId,
       ref: "User",
       required: true
     },
@@ -783,10 +799,10 @@ var VerifyAccessTokenMiddleWare = (req, res, next) => {
 import { Types } from "mongoose";
 
 // src/features/cart/cart.model.ts
-import mongoose6, { model as model3, Schema as Schema3 } from "mongoose";
+import mongoose7, { model as model3, Schema as Schema3 } from "mongoose";
 var CartItemSchema = new Schema3(
   {
-    productId: { type: mongoose6.Schema.Types.ObjectId, ref: "Product", required: true },
+    productId: { type: mongoose7.Schema.Types.ObjectId, ref: "Product", required: true },
     name: { type: String, required: true },
     price: { type: Number, required: true },
     subtotal: { type: Number, required: true },
@@ -799,7 +815,7 @@ var CartItemSchema = new Schema3(
 var cartSchema = new Schema3(
   {
     user: {
-      type: mongoose6.Schema.Types.ObjectId,
+      type: mongoose7.Schema.Types.ObjectId,
       ref: "User",
       required: true
     },
@@ -969,7 +985,7 @@ cartRouter.put("/update", VerifyAccessTokenMiddleWare, updateCartController);
 // src/index.ts
 var app = express();
 var PORT = process.env.PORT || 5e3;
-app.use(cors({ origin: ["http://localhost:3000"] }));
+app.use(cors({ origin: ["http://localhost:3000", "https://mybazzzar.vercel.app"] }));
 app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/", uploadRouter);
